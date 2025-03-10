@@ -6,7 +6,7 @@ namespace WebApplication2.Interfaces.Repositories;
 public interface ICategoryRepository
 {
     Task AddAsync(int userId, string name, Type type);
-    Task<IEnumerable<Category?>> GetAllCategoryAsync(int userId);
+    Task<IEnumerable<Category?>> GetAllCategoryAsync();
     Task<bool> UpdateAsync(Category category);
     Task<bool> DelateAsync(int categoryId);
 

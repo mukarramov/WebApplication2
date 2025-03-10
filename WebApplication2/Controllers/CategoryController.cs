@@ -19,12 +19,9 @@ public class CategoryController(ICategoryService categoryService) : ControllerBa
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IEnumerable<Category?>> GetAll()
     {
-        var userClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        int userId = int.Parse(userClaim ?? throw new InvalidOperationException("nullllllllllll!"));
-        var categories = await _categoryService.GetAll(userId);
-        return Ok(categories);
+        return await _categoryService.GetAll();
     }
 
     [HttpPut]
