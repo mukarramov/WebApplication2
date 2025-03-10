@@ -31,6 +31,8 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddOptions<JwtOptions>().Bind(builder.Configuration.GetSection("Jwt"));
 
 builder.Services.AddEndpointsApiExplorer();

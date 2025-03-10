@@ -1,14 +1,12 @@
-﻿using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WebApplication2.Context;
 using WebApplication2.Interfaces.Repositories;
 using WebApplication2.Models;
 
 namespace WebApplication2.Repositories;
 
-public class UserRepository(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor) : IUserRepository
+public class UserRepository(ApplicationDbContext context) : IUserRepository
 {
-    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
     private readonly ApplicationDbContext _context = context;
 
     public async Task AddAsync(User user)
@@ -36,7 +34,6 @@ public class UserRepository(ApplicationDbContext context, IHttpContextAccessor h
 
     public Task<User?> GetByIdAsync(int userId)
     {
-        var user = _httpContextAccessor.HttpContext?.User;
         throw new NotImplementedException();
     }
 

@@ -21,9 +21,9 @@ public class CategoryController(ICategoryService categoryService) : ControllerBa
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var userId = User.FindFirstValue("id");
-        int newUserId = int.Parse(userId);
-        var categories = await _categoryService.GetAll(newUserId);
+        var userClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        int userId = int.Parse(userClaim ?? throw new InvalidOperationException("nullllllllllll!"));
+        var categories = await _categoryService.GetAll(userId);
         return Ok(categories);
     }
 
