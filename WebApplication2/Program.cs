@@ -1,11 +1,8 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using WebApplication2;
-using WebApplication2.Common;
 using WebApplication2.Context;
 using WebApplication2.Interfaces.Repositories;
 using WebApplication2.Interfaces.Services;
@@ -33,18 +30,31 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddOptions<JwtOptions>().Bind(builder.Configuration.GetSection("Jwt"));
-
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(option =>
+builder.Services.AddSwaggerGen(options =>
 {
-    option.AddSecurityDefinition(name: "Bearer", securityScheme: new OpenApiSecurityScheme
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Name = "Authorization",
-        Description = "Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
+        Name = "Authorization",
+        Description = "Bearer Authentication with JWT Token",
+        Type = SecuritySchemeType.Http
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Id = "Bearer",
+                    Type = ReferenceType.SecurityScheme
+                }
+            },
+            new List<string>()
+        }
     });
 });
 
@@ -54,18 +64,16 @@ builder.Services.AddAuthentication(options =>
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(option =>
+}).AddJwtBearer(options =>
 {
-    option.TokenValidationParameters = new TokenValidationParameters
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuer = true,  // Validate Issuer
-        ValidateAudience = true, // Validate Audience
-        ValidateLifetime = true, // Validate Lifetime (exp)
-        ValidateIssuerSigningKey = true, // Validate the signing key
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],  // Your configured issuer
-        ValidAudience = builder.Configuration["Jwt:Audience"],  // Your configured audience
+        ValidateIssuer = false, // ��������� �������� Issuer
+        ValidateAudience = false, // ��������� �������� Audience
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ??
-                                                                           throw new NullReferenceException("JWT Key is missing!")))
+                                                                           throw new InvalidOperationException()))
     };
 });
 

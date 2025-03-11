@@ -23,9 +23,9 @@ public class CategoryService(ICategoryRepository categoryRepository) : ICategory
         return newCategory;
     }
 
-    public async Task<IEnumerable<Category?>> GetAll()
+    public async Task<IEnumerable<Category?>> GetAll(int userId)
     {
-        return await _categoryRepository.GetAllCategoryAsync();
+        return await _categoryRepository.GetAllCategoryAsync(userId);
     }
 
     public async Task<bool> Update(Category category)

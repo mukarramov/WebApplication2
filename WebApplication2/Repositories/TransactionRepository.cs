@@ -24,9 +24,9 @@ public class TransactionRepository(ApplicationDbContext context) : ITransactionR
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<Transaction>?> GetAllTransactionAsync()
+    public async Task<IEnumerable<Transaction>?> GetAllTransactionAsync(int userId)
     {
-        return await _context.Transactions.ToListAsync();
+        return await _context.Transactions.Where(x => x.UserId == userId).ToListAsync();
     }
 
     public async Task<bool> UpdateAsync(Transaction transaction)

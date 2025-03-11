@@ -25,9 +25,9 @@ public class TransactionService(ITransactionRepository transactionRepository) : 
         return newTransaction;
     }
 
-    public async Task<IEnumerable<Transaction?>> GelAll()
+    public async Task<IEnumerable<Transaction?>> GelAll(int userId)
     {
-        return await _transactionRepository.GetAllTransactionAsync() ?? throw new InvalidOperationException();
+        return await _transactionRepository.GetAllTransactionAsync(userId) ?? throw new InvalidOperationException();
     }
 
     public async Task<bool> Update(Transaction transaction)

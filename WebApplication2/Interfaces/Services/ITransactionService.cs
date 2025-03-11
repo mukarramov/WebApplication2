@@ -6,7 +6,7 @@ namespace WebApplication2.Interfaces.Services;
 public interface ITransactionService
 {
     Task<Transaction?> Create(int userId, int categoryId, Type type, string note);
-    Task<IEnumerable<Transaction?>> GelAll();
+    Task<IEnumerable<Transaction?>> GelAll(int userId);
     Task<bool> Update(Transaction transaction);
     Task<bool> Delete(int transactionId);
 

@@ -23,9 +23,9 @@ public class CategoryRepository(ApplicationDbContext context) : ICategoryReposit
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<Category?>> GetAllCategoryAsync()
+    public async Task<IEnumerable<Category?>> GetAllCategoryAsync(int userId)
     {
-        return await _context.Categories.ToListAsync();
+        return await _context.Categories.Where(x => x.UserId == userId).ToListAsync();
     }
 
     public async Task<bool> UpdateAsync(Category category)

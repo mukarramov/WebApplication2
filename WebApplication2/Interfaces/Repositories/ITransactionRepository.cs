@@ -6,7 +6,7 @@ namespace WebApplication2.Interfaces.Repositories;
 public interface ITransactionRepository
 {
     Task AddAsync(int userId, int categoryId, Type type, string note);
-    Task<IEnumerable<Transaction>?> GetAllTransactionAsync();
+    Task<IEnumerable<Transaction>?> GetAllTransactionAsync(int userId);
     Task<bool> UpdateAsync(Transaction transaction);
     Task<bool> DeleteAsync(int transactionId);
 

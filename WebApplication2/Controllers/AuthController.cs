@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication2.Interfaces.Services;
 using WebApplication2.Models;
 
@@ -30,19 +29,6 @@ public class AuthController(IAuthService authService) : ControllerBase
 
     [HttpPost("register/user")]
     public async Task<IActionResult> RegisterUser([FromBody] User user)
-    {
-        var success = await _authService.RegisterAsync(user);
-        if (!success)
-        {
-            return BadRequest("not found!");
-        }
-
-        return Ok(success);
-    }
-
-    [HttpPost("register/admin")]
-    [Authorize(Roles = "admin")]
-    public async Task<IActionResult> RegisterAdmin([FromBody] User user)
     {
         var success = await _authService.RegisterAsync(user);
         if (!success)
