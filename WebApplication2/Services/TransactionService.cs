@@ -16,7 +16,7 @@ public class TransactionService(ITransactionRepository transactionRepository) : 
             UserId = userId,
             CategoryId = categoryId,
             Type = type,
-            Date = DateTime.UtcNow,
+            Date = DateTime.Now.ToShortDateString(),
             Note = note
         };
 
@@ -33,7 +33,7 @@ public class TransactionService(ITransactionRepository transactionRepository) : 
     public async Task<bool> Update(Transaction transaction)
     {
         var check = false;
-        
+
         await _transactionRepository.UpdateAsync(transaction);
 
         check = true;
@@ -45,8 +45,13 @@ public class TransactionService(ITransactionRepository transactionRepository) : 
         return await _transactionRepository.DeleteAsync(transactionId);
     }
 
-    public Task<Transaction?> GetById(int transactionId)
+    public async Task<Transaction?> GetById(int transactionId, int userId)
     {
-        throw new NotImplementedException();
+        return await _transactionRepository.GetByIdAsync(transactionId, userId);
+    }
+
+    public async Task<List<Transaction>> GetByDate(string date, int userId)
+    {
+        return await _transactionRepository.GetByDate(date, userId);
     }
 }

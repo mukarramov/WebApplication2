@@ -8,6 +8,6 @@ public class Transaction
     public int UserId { get; set; }
     public int CategoryId { get; set; }
     public Type Type { get; set; }
-    public DateTime Date { get; set; }
+    public string? Date { get; set; }
     public string? Note { get; set; }
 }

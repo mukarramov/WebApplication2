@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication2.Interfaces.Services;
 using WebApplication2.Models;
@@ -13,10 +12,10 @@ namespace WebApplication2.Controllers;
 public class TransactionController(ITransactionService transactionService) : ControllerBase
 {
     private readonly ITransactionService _transactionService = transactionService;
-    
+
     public int UserId => int.Parse(User.Claims.First(i => i.Type == "id").Value);
 
-   // private new int UserId => int.Parse(User.Claims.First(i => i.Type == "id").Value);
+    // private new int UserId => int.Parse(User.Claims.First(i => i.Type == "id").Value);
 
     [HttpPost]
     public async Task Create(int categoryId, Type type, string note)
@@ -37,8 +36,20 @@ public class TransactionController(ITransactionService transactionService) : Con
     }
 
     [HttpDelete]
-    public async Task<bool> Delete(int categoryId)
+    public async Task<bool> Delete(int transactionId)
     {
-        return await _transactionService.Delete(categoryId);
+        return await _transactionService.Delete(transactionId);
+    }
+
+    [HttpGet]
+    public async Task<Transaction?> GetById(int transactionId)
+    {
+        return await _transactionService.GetById(transactionId, UserId);
+    }
+
+    [HttpGet]
+    public async Task<List<Transaction>> GetByDate(string date)
+    {
+        return await _transactionService.GetByDate(date, UserId);
     }
 }

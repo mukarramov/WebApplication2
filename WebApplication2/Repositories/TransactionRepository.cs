@@ -17,7 +17,7 @@ public class TransactionRepository(ApplicationDbContext context) : ITransactionR
             UserId = userId,
             CategoryId = categoryId,
             Type = type,
-            Date = DateTime.UtcNow,
+            Date = DateTime.Now.ToShortDateString(),
             Note = note
         };
         await _context.Transactions.AddAsync(newTransaction);
@@ -66,9 +66,28 @@ public class TransactionRepository(ApplicationDbContext context) : ITransactionR
         return check;
     }
 
-    public Task<Transaction?> GetByIdAsync(int transactionId)
+    public async Task<Transaction> GetByIdAsync(int transactionId, int userId)
     {
-        throw new NotImplementedException();
+        var findById = await _context.Transactions.FirstOrDefaultAsync(x => x.Id == transactionId && x.UserId == userId);
+
+        if (findById == null)
+        {
+            throw new NullReferenceException("not found!");
+        }
+
+        return findById;
+    }
+
+    public async Task<List<Transaction>> GetByDate(string date, int userId)
+    {
+        var findByDate = await _context.Transactions.Where(x => x.Date == date && x.UserId == userId).ToListAsync();
+
+        if (findByDate==null)
+        {
+            throw new NullReferenceException("the problem in your authorization");
+        }
+
+        return findByDate;
     }
 
     public Task<Transaction?> GetByUserId(int userId)

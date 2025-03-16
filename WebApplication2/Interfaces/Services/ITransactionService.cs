@@ -10,5 +10,7 @@ public interface ITransactionService
     Task<bool> Update(Transaction transaction);
     Task<bool> Delete(int transactionId);
 
-    Task<Transaction?> GetById(int transactionId);
+    Task<Transaction?> GetById(int transactionId, int userId);
+    Task<List<Transaction>> GetByDate(string date, int userId);
+
 }

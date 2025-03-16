@@ -11,14 +11,16 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
 
     public async Task AddAsync(User user)
     {
-        var checkEmail = _context.Users.FirstOrDefaultAsync(x => x.Email == user.Email);
-        if (checkEmail != null)
+        var checkEmail = _context.Users.FirstOrDefault(x => x.Email == user.Email);
+
+        if (checkEmail?.Email != null)
         {
             throw new NullReferenceException("this email is exists!");
         }
 
         string hashPassword = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
         user.PasswordHash = hashPassword;
+        user.CreateAt = DateTime.Now.ToShortDateString(); 
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
     }
