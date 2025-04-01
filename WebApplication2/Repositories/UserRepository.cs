@@ -20,7 +20,7 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
 
         string hashPassword = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
         user.PasswordHash = hashPassword;
-        user.CreateAt = DateTime.Now.ToShortDateString(); 
+        user.CreateAt = DateTime.Now.ToShortDateString();
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
     }
@@ -47,7 +47,8 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
 
     public async Task<User?> GetByUserEmailAsync(string email)
     {
-        return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+        var checkEmail = await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+        return checkEmail;
     }
 
     public Task<bool> ExistsAsync(string email)

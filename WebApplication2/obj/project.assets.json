@@ -3326,19 +3326,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\bobo\\.nuget\\packages\\": {}
+    "C:\\Users\\Bobo\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\bobo\\source\\repos\\all-folder\\C#\\API\\WebApplication2\\WebApplication2\\WebApplication2.csproj",
+      "projectUniqueName": "C:\\Users\\Bobo\\Base\\C#\\alif course c#\\WebApplication2\\WebApplication2\\WebApplication2.csproj",
       "projectName": "WebApplication2",
-      "projectPath": "C:\\Users\\bobo\\source\\repos\\all-folder\\C#\\API\\WebApplication2\\WebApplication2\\WebApplication2.csproj",
-      "packagesPath": "C:\\Users\\bobo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\bobo\\source\\repos\\all-folder\\C#\\API\\WebApplication2\\WebApplication2\\obj\\",
+      "projectPath": "C:\\Users\\Bobo\\Base\\C#\\alif course c#\\WebApplication2\\WebApplication2\\WebApplication2.csproj",
+      "packagesPath": "C:\\Users\\Bobo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Bobo\\Base\\C#\\alif course c#\\WebApplication2\\WebApplication2\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\bobo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Bobo\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -3360,8 +3360,9 @@
       "restoreAuditProperties": {
         "enableAudit": "true",
         "auditLevel": "low",
-        "auditMode": "all"
-      }
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net9.0": {
@@ -3425,7 +3426,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.202/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

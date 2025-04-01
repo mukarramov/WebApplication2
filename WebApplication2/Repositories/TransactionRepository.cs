@@ -8,10 +8,15 @@ namespace WebApplication2.Repositories;
 
 public class TransactionRepository(ApplicationDbContext context) : ITransactionRepository
 {
-    private readonly ApplicationDbContext _context = context;
-
     public async Task AddAsync(int userId, int categoryId, Type type, string note)
     {
+        var category = await context.Categories.FirstOrDefaultAsync(x => x.UserId == userId && x.Id == categoryId);
+
+        if (category == null)
+        {
+            throw new Exception("not found any category for this user");
+        }
+
         var newTransaction = new Transaction
         {
             UserId = userId,
@@ -20,27 +25,36 @@ public class TransactionRepository(ApplicationDbContext context) : ITransactionR
             Date = DateTime.Now.ToShortDateString(),
             Note = note
         };
-        await _context.Transactions.AddAsync(newTransaction);
-        await _context.SaveChangesAsync();
+
+        // var t = context.Categories.Where(x => x.UserId == userId);
+        // var s = t.FirstAsync(x => x.Id == newTransaction.CategoryId);
+
+        // if (newTransaction.CategoryId != s.Id)
+        // {
+        //     throw new Exception("not found any category for this user");
+        // }
+
+        await context.Transactions.AddAsync(newTransaction);
+        await context.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<Transaction>?> GetAllTransactionAsync(int userId)
     {
-        return await _context.Transactions.Where(x => x.UserId == userId).ToListAsync();
+        return await context.Transactions.Where(x => x.UserId == userId).ToListAsync();
     }
 
     public async Task<bool> UpdateAsync(Transaction transaction)
     {
         var check = false;
 
-        var findById = await _context.Transactions.FindAsync(transaction.Id);
+        var findById = await context.Transactions.FindAsync(transaction.Id);
         if (findById == null)
         {
             throw new NullReferenceException("not exist!");
         }
 
-        _context.Entry(findById).CurrentValues.SetValues(transaction);
-        await _context.SaveChangesAsync();
+        context.Entry(findById).CurrentValues.SetValues(transaction);
+        await context.SaveChangesAsync();
 
         check = true;
 
@@ -58,8 +72,8 @@ public class TransactionRepository(ApplicationDbContext context) : ITransactionR
             throw new NullReferenceException("not found transaction!");
         }
 
-        _context.Transactions.Remove(findId);
-        await _context.SaveChangesAsync();
+        context.Transactions.Remove(findId);
+        await context.SaveChangesAsync();
 
         check = true;
 
@@ -68,11 +82,11 @@ public class TransactionRepository(ApplicationDbContext context) : ITransactionR
 
     public async Task<Transaction> GetByIdAsync(int transactionId, int userId)
     {
-        var findById = await _context.Transactions.FirstOrDefaultAsync(x => x.Id == transactionId && x.UserId == userId);
+        var findById = await context.Transactions.FirstOrDefaultAsync(x => x.Id == transactionId && x.UserId == userId);
 
         if (findById == null)
         {
-            throw new NullReferenceException("not found!");
+            throw new NullReferenceException("you dont have any transaction by this id!");
         }
 
         return findById;
@@ -80,9 +94,9 @@ public class TransactionRepository(ApplicationDbContext context) : ITransactionR
 
     public async Task<List<Transaction>> GetByDate(string date, int userId)
     {
-        var findByDate = await _context.Transactions.Where(x => x.Date == date && x.UserId == userId).ToListAsync();
+        var findByDate = await context.Transactions.Where(x => x.Date == date && x.UserId == userId).ToListAsync();
 
-        if (findByDate==null)
+        if (findByDate == null)
         {
             throw new NullReferenceException("the problem in your authorization");
         }
