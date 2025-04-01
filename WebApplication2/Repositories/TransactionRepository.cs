@@ -26,14 +26,6 @@ public class TransactionRepository(ApplicationDbContext context) : ITransactionR
             Note = note
         };
 
-        // var t = context.Categories.Where(x => x.UserId == userId);
-        // var s = t.FirstAsync(x => x.Id == newTransaction.CategoryId);
-
-        // if (newTransaction.CategoryId != s.Id)
-        // {
-        //     throw new Exception("not found any category for this user");
-        // }
-
         await context.Transactions.AddAsync(newTransaction);
         await context.SaveChangesAsync();
     }
@@ -45,8 +37,6 @@ public class TransactionRepository(ApplicationDbContext context) : ITransactionR
 
     public async Task<bool> UpdateAsync(Transaction transaction)
     {
-        var check = false;
-
         var findById = await context.Transactions.FindAsync(transaction.Id);
         if (findById == null)
         {
@@ -56,15 +46,13 @@ public class TransactionRepository(ApplicationDbContext context) : ITransactionR
         context.Entry(findById).CurrentValues.SetValues(transaction);
         await context.SaveChangesAsync();
 
-        check = true;
+        var check = true;
 
         return check;
     }
 
     public async Task<bool> DeleteAsync(int transactionId)
     {
-        bool check;
-
         var findId = context.Transactions.FirstOrDefault(x => x.Id == transactionId);
 
         if (findId == null)
@@ -75,7 +63,7 @@ public class TransactionRepository(ApplicationDbContext context) : ITransactionR
         context.Transactions.Remove(findId);
         await context.SaveChangesAsync();
 
-        check = true;
+        var check = true;
 
         return check;
     }

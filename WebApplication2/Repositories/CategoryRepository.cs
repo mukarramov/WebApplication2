@@ -8,8 +8,6 @@ namespace WebApplication2.Repositories;
 
 public class CategoryRepository(ApplicationDbContext context) : ICategoryRepository
 {
-    private readonly ApplicationDbContext _context = context;
-
     public async Task AddAsync(int userId, string name, Type type)
     {
         var newCategory = new Category
@@ -19,27 +17,27 @@ public class CategoryRepository(ApplicationDbContext context) : ICategoryReposit
             Type = type
         };
 
-        await _context.Categories.AddAsync(newCategory);
-        await _context.SaveChangesAsync();
+        await context.Categories.AddAsync(newCategory);
+        await context.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<Category?>> GetAllCategoryAsync(int userId)
     {
-        return await _context.Categories.Where(x => x.UserId == userId).ToListAsync();
+        return await context.Categories.Where(x => x.UserId == userId).ToListAsync();
     }
 
     public async Task<bool> UpdateAsync(Category category)
     {
         var check = false;
 
-        var findById = await _context.Categories.FindAsync(category.Id);
+        var findById = await context.Categories.FindAsync(category.Id);
         if (findById == null)
         {
             throw new NullReferenceException("not fount!");
         }
 
-        _context.Entry(findById).CurrentValues.SetValues(category);
-        await _context.SaveChangesAsync();
+        context.Entry(findById).CurrentValues.SetValues(category);
+        await context.SaveChangesAsync();
 
         check = true;
 
@@ -50,14 +48,14 @@ public class CategoryRepository(ApplicationDbContext context) : ICategoryReposit
     {
         var check = false;
 
-        var findId = _context.Categories.FirstOrDefault(x => x.Id == categoryId);
+        var findId = context.Categories.FirstOrDefault(x => x.Id == categoryId);
         if (findId == null)
         {
             throw new NullReferenceException("not found!");
         }
 
-        _context.Categories.Remove(findId);
-        await _context.SaveChangesAsync();
+        context.Categories.Remove(findId);
+        await context.SaveChangesAsync();
 
         check = true;
 
